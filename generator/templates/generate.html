@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        @page {
+            size: a4 portrait;
+
+            @frame header_frame {
+               -pdf-frame-content: header_content;
+                left: 10pt;
+                width: 575pt;
+                top: 10pt;
+                heigth: 100pt;
+            }
+
+            @frame content_frame {
+                left: 10pt;
+                width: 575pt;
+                top: 150pt;
+                height: 692pt;
+            }
+        }
+
+        #approved_text {
+            font-size: 10px;
+            text-align: right;
+        }
+
+        table {
+            border: 1px solid black;
+            margin-top: 15px;
+
+        }
+
+        td {
+            padding-top: 1px;
+            padding-left: 1px;
+        }
+
+        #application_details {
+            border: 1px solid;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .patent_table_header {
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .patent_table {
+            font-size: 12px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="content">
+<div id="header_content">
+<p id='ids_code'">Doc code: IDS<BR/>Doc description: Information Disclosure Statement (IDS) Filed</p>
+<table id="application_details" style="width: 10px;">
+    <tr>
+        <td id="application_details_header" rowspan="6" style="width: 60%;">
+            <b>
+                <div id="information_disclosure_header">
+                    INFORMATION DISCLOSURE<BR/>
+                    STATEMENT BY APPLICANT<BR/>
+                    ( Not for submission under 37 CFR 1.99)
+                </div>
+            </b>
+        </td>
+                <td style="width: 25%;"> Application Number </td>
+                <td style="width: 15%;"> {{ application_number }} </td>
+            </tr>
+            <tr>
+                <td style="width: 25%;"> Filing Date </td>
+                <td style="width: 15%;"> {{ filing_date }} </td>
+            </tr>
+            <tr>
+                <td style="width: 25%;"> First Named Inventor  </td>
+                <td style="width: 15%;"> {{ first_named_inventor }} </td>
+            </tr>
+            <tr>
+                <td style="width: 25%;">Art Unit</td>
+                <td style="width: 15%;">{{ art_unit }}</td>
+            </tr>
+            <tr>
+                <td style="width: 30%;">Examiner Name</td>
+                <td style="width: 30%;">{{ examiner_name }}</td>
+            </tr>
+            <tr>
+                <td style="width: 30%;">Attorney Docket Number</td>
+                <td style="width: 30%;">{{ docket_number }}</td>
+            </tr>
+</table>
+</div>
+<div class="patent_table">
+    <table>
+        <thead>
+            <tr class="patent_table_header">
+                <td colspan="7">U.S.PATENTS</td>
+            </tr>
+        </thead>
+        <tr>
+            <td style="width: 7%;">Examiner Initial* </td>
+            <td style="width: 4%;">Cite No </td>
+            <td style="width: 15%;">Patent Number </td>
+            <td style="width: 7%;">Kind Code </td>
+            <td style="width: 10%;">Issue Date </td>
+            <td style="width: 24%;">Name of Patentee or Applicant of cited Document</td>
+            <td style="width: 33%;">Pages,Columns,Lines where Relevant Passages or Relevant Figures Appear</td>
+        </tr>
+        {% for patent in us_patents %}
+            <tr>
+                <td></td>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ patent.number }}</td>
+                <td></td>
+                <td>{{ patent.date }}</td>
+                <td>{{ patent.inventor }}</td>
+                <td></td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<div class="patent_table">
+    <table>
+        <thead>
+            <tr class="patent_table_header">
+                <td colspan="7">U.S.PATENT APPLICATION PUBLICATIONS</td>
+            </tr>
+        </thead>
+        <tr>
+            <td style="width: 7%;">Examiner Initial* </td>
+            <td style="width: 4%;">Cite No </td>
+            <td style="width: 15%;">Patent Number </td>
+            <td style="width: 7%;">Kind Code </td>
+            <td style="width: 10%;">Issue Date </td>
+            <td style="width: 24%;">Name of Patentee or Applicant of cited Document</td>
+            <td style="width: 33%;">Pages,Columns,Lines where Relevant Passages or Relevant Figures Appear</td>
+        </tr>
+        {% for patent in us_applications %}
+            <tr>
+                <td></td>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ patent.number }}</td>
+                <td></td>
+                <td>{{ patent.date }}</td>
+                <td>{{ patent.inventor }}</td>
+                <td></td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<div class="patent_table">
+    <table>
+        <thead>
+            <tr class="patent_table_header">
+                <td colspan="8">FOREIGN PATENT DOCUMENTS</td>
+            </tr>
+        </thead>
+        <tr>
+            <td style="width: 7%;">Examiner Initial* </td>
+            <td style="width: 4%;">Cite No </td>
+            <td style="width: 15%;">Patent Number </td>
+            <td style="width: 7%;">Kind Code </td>
+            <td style="width: 10%">Issue Date </td>
+            <td style="width: 24%;">Name of Patentee or Applicant of cited Document</td>
+            <td style="width: 30%;">Pages,Columns,Lines where Relevant Passages or Relevant Figures Appear</td>
+            <td style="width: 3%;">T5</td>
+        </tr>
+        {% for patent in foreign_applications %}
+            <tr>
+                <td></td>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ patent.number }}</td>
+                <td></td>
+                <td>{{ patent.date }}</td>
+                <td>{{ patent.inventor }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<div class="patent_table">
+    <table>
+        <thead>
+            <tr class="patent_table_header">
+                <td colspan="4">NON-PATENT LITERATURE DOCUMENTS</td>
+            </tr>
+        </thead>
+        <tr>
+            <td style="width: 7%;">Examiner Initial* </td>
+            <td style="width: 4%;">Cite No </td>
+            <td style="width: 86%;">Include name of the author (in CAPITAL LETTERS), title of the article (when appropriate), title of the item
+            (book, magazine, journal, serial, symposium, catalog, etc), date, pages(s), volume-issue number(s),
+            publisher, city and/or country where published. </td>
+            <td style="width: 3%;">T5</td>
+        </tr>
+        {% for non_patent in non_patents %}
+            <tr>
+                <td></td>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ non_patent.text }}</td>
+                <td></td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+#ids_code {
+    font-size: 12px;
+}
+
+#approved_text {
+    font-size: 10px;
+    text-align: right;
+    position: fixed;
+    top: 0px;
+    right: 0px;
+}
+
+table {
+    border: 1px solid;
+    border-collapse: collapse;
+    width: 100%;
+    position: relative;
+    top: 20px;
+}
+
+table td{
+    border: 1px solid;
+}
+
+#application_details {
+    border: 1px solid;
+    border-collapse: collapse;
+    font-size: 10px;
+}
+
+#information_disclosure_header {
+    font-size: 13px;
+}
+
+thead {
+    border: 1px solid;
+}
+
+#us_patent_header {
+    font-weight: bold;
+    text-align: center;
+}
+
+#us_patents_table {
+    position: relative;
+    font-size: 10px;
+    top: 10px;
+}

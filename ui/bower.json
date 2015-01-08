@@ -1,0 +1,25 @@
+{
+  "name": "pekama",
+  "version": "0.4.1",
+  "homepage": "pekama.com",
+  "authors": [
+    "Qweeco Studio <info@qweeco.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    ".sass-cache",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "3.2.0",
+    "angular": "1.3.4",
+    "angular-resource": "1.3.4",
+    "angular-cookies": "1.3.4",
+    "angular-bootstrap": "0.12.0"
+  }
+}

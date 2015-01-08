@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IDS Data</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <style type="text/css">
+        thead{
+            text-align: center;
+        }
+    </style>
+</head>
+ <body>
+<div class='col-md-6 col-md-offset-3'>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <td colspan="7">U.S.PATENTS</td>
+            </tr>
+            <tr>
+                <td>Patent Number </td>
+                <td>Issue Date </td>
+                <td>Name of Patentee or Applicant of cited Document</td>
+            </tr>
+        </thead>
+        <tbody>
+        {% for patent in us_patents %}
+            <tr>
+                <td>{{ patent.number }}</td>
+                <td>{{ patent.date }}</td>
+                <td>{{ patent.inventor }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <td colspan="7">U.S.PATENT APPLICATION PUBLICATIONS</td>
+            </tr>
+            <tr>
+                <td>Patent Number </td>
+                <td>Issue Date </td>
+                <td>Name of Patentee or Applicant of cited Document</td>
+            </tr>
+        </thead>
+        <tbody>
+        {% for patent in us_applications %}
+            <tr>
+                <td>{{ patent.number }}</td>
+                <td>{{ patent.date }}</td>
+                <td>{{ patent.applicant }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <td colspan="7">FOREIGN PATENT DOCUMENTS</td>
+            </tr>
+
+            <tr>
+               <td>Patent Number </td>
+               <td>Issue Date </td>
+               <td>Name of Patentee or Applicant of cited Document</td>
+            </tr>
+        </thead>
+    <tbody>
+        {% for patent in foreign_applications %}
+            <tr>
+                <td>{{ patent.number }}</td>
+                <td>{{ patent.date }}</td>
+                <td>{{ patent.applicant }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+</div>
+</body>
+</html>

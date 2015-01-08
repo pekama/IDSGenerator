@@ -1,0 +1,23 @@
+{
+  "name": "PekamaAssets",
+  "version": "0.4.1",
+  "description": "",
+  "main": "Gruntfile.js",
+  "author": "Qweeco Studio <info@qweeco.com>",
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-concat": "~0.4.0",
+    "grunt-bower-task": "~0.3.4",
+    "grunt-contrib-compass": "~0.8.0",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-angular-templates": "~0.5.5",
+    "assemble": "~0.4.37",
+    "grunt-http-server": "~0.0.5",
+    "grunt-contrib-symlink": "~0.3.0",
+    "grunt-mkdir": "~0.1.2",
+    "grunt-contrib-uglify": "~0.5.0",
+    "grunt-contrib-clean": "~0.6.0"
+  }
+}

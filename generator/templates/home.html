@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <title>IDS Data Extractor</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
+<div class='col-md-8'>
+    <form role='form' method="POST" action="generatestatement">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="first_named_inventor">First Named Inventor:</label>
+          <input type="text" class="form-control" id="first_named_inventor" name="first_named_inventor">
+        </div>
+
+        <div class="form-group">
+          <label for="docket_number">Attorney Docket Number:</label>
+          <input type="text" class="form-control" id="docket_number" name="docket_number">
+        </div>
+
+        <table id="us_patent_table" class="table">
+            <thead>
+            <tr>
+                <td>Patent Number</td>
+                <td>Issue Date</td>
+                <td>First Named Inventor</td>
+            </tr>
+            </thead>
+            <div class="form-group">
+                <tr id="us_patent_row_1" class="us_patent_row">
+                  <td><input type="text" class="form-control us_patent" name="us_patent"></td>
+                  <td><input type="text" class="form-control us_patent_date" name="us_patent_date"></td>
+                  <td><input type="text" class="form-control us_patent_inventor" name="us_patent_inventor"></td>
+                </tr>
+            </div>
+        </table>
+
+        <table id="us_application_table" class="table">
+                    <thead>
+                    <tr>
+                        <td>Application Numbers</td>
+                        <td>Issue Date</td>
+                        <td>First Named Applicant</td>
+                    </tr>
+                    </thead>
+                    <div class="form-group">
+                        <tr id="us_application_row_1" class="us_application_row">
+                          <td><input type="text" class="form-control us_application" name="us_application"></td>
+                          <td><input type="text" class="form-control us_application_date" name="us_application_date"></td>
+                          <td><input type="text" class="form-control us_application_applicant" name="us_application_inventor"></td>
+                        </tr>
+                    </div>
+        </table>
+
+        <table id="foreign_application_table" class="table">
+                    <thead>
+                    <tr>
+                        <td>Application Numbers</td>
+                        <td>Issue Date</td>
+                        <td>First Named Applicant</td>
+                    </tr>
+                    </thead>
+                    <div class="form-group">
+                        <tr id="foreign_application_row_1" class="foreign_application_row">
+                          <td><input type="text" class="form-control foreign_application" name="foreign_application"></td>
+                          <td><input type="text" class="form-control foreign_application_date" name="foreign_application_date"></td>
+                          <td><input type="text" class="form-control foreign_application_applicant" name="foreign_application_inventor"></td>
+                        </tr>
+                    </div>
+        </table>
+
+        <table id="non_patent_table" class="table">
+                    <thead>
+                    <tr>
+                        <td>Non Patent Litrature</td>
+                    </tr>
+                    </thead>
+                    <div class="form-group">
+                        <tr id="non_patent_row_1" class="non_patent_row">
+                          <td><input type="text" class="form-control non_patent" name="non_patent"></td>
+                        </tr>
+                    </div>
+        </table>
+
+        <div class="radio">
+         <label><input type="radio" value="1" name="item_cited">That each item of information contained in the information disclosure statement was first cited in any
+         communication from a foreign patent office in a counterpart foreign application not more than three months prior
+         to the filing of the information disclosure statement. See 37 CFR 1.97(e)(1).</label>
+       </div>
+
+       <div class="radio">
+         <label><input type="radio" value="2" name="item_cited">That no item of information contained in the information disclosure statement was cited in a communication from
+         a foreign patent office in a counterpart foreign application, and, to the knowledge of the person signing the
+         certification after making reasonable inquiry, no item of information contained in the information disclosure
+         statement was known to any individual designated in 37 CFR 1.56(c) more than three months prior to the filing of
+         the information disclosure statement. See 37 CFR 1.97(e)(2).</label>
+       </div>
+
+        <div class="checkbox">
+          <label><input type="checkbox" name="choices" value="1">See attached certification statement.</label>
+        </div>
+
+        <div class="checkbox">
+          <label><input type="checkbox" name="choices" value="2">The fee set forth in 37 CFR 1.17 (p) has been submitted herewith.</label>
+        </div>
+
+        <div class="checkbox">
+          <label><input type="checkbox" name="choices" value="3">A certification statement is not submitted herewith.</label>
+        </div>
+
+        <div class="form-group">
+          <label for="signature_name">Name:</label>
+          <input type="text" class="form-control" id="signature_name" name="signature_name">
+        </div>
+
+        <div class="form-group">
+          <label for="signature_registration_number">Registration Number:</label>
+          <input type="text" class="form-control" id="signature_registration_number" name="signature_registration_number">
+        </div>
+
+        <button type="submit" class="btn btn-default">Submit</button>
+
+    </form>
+</div>
+
+<script>
+row_number = 2;
+
+    $(".us_patent_row .us_patent").blur(function() {
+        row = $(this).parent().parent();
+        $.ajax({
+            url: 'uspatentdata',
+            type: 'get',
+            data: {
+                us_patent: $(this).val()
+            },
+            success: function (data) {
+                $('#' + row.attr('id') + ' .us_patent_date').val(data['date']);
+                $('#' + row.attr('id') + ' .us_patent_inventor').val(data['inventor']);
+            },
+            failure: function (data) {
+                alert('Got an error dude');
+            }
+        });
+    });
+
+    $(".us_application_row .us_application").blur(function() {
+        row = $(this).parent().parent();
+        $.ajax({
+            url: 'usapplicationdata',
+            type: 'get',
+            data: {
+            us_application: $(this).val()
+            },
+            success: function(data) {
+                $('#'+row.attr('id')+' .us_application_date').val(data['date']);
+                $('#'+row.attr('id')+' .us_application_applicant').val(data['applicant']);
+            },
+            failure: function(data) {
+                alert('Got an error dude');
+            }
+        });
+    });
+
+    $(".foreign_application_row .foreign_application").blur(function() {
+        row = $(this).parent().parent();
+        $.ajax({
+            url: 'foreignapplicationdata',
+            type: 'get',
+            data: {
+            foreign_application: $(this).val()
+            },
+            success: function(data) {
+                $('#'+row.attr('id')+' .foreign_application_date').val(data['date']);
+                $('#'+row.attr('id')+' .foreign_application_applicant').val(data['applicant']);
+            },
+            failure: function(data) {
+                alert('Got an error dude');
+            }
+        });
+    });
+</script>
+</body>
+</html>

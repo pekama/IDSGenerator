@@ -1,0 +1,352 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <style>
+
+        @page {
+            size: a4 portrait;
+
+            @frame header_frame {
+               -pdf-frame-content: header_content;
+                left: 10pt;
+                width: 575pt;
+                top: 10pt;
+                heigth: 100pt;
+            }
+
+            @frame all_content {
+                -pdf-frame-content: all_content;
+                left: 10pt;
+                width: 575pt;
+                top: 120pt;
+                height: 692pt;
+                border: 1pt solid black;
+            }
+
+            @frame content_frame {
+                left: 50pt;
+                width: 575pt;
+                top: 450pt;
+                height: 992pt;
+            }
+
+            @frame checkboxes_frame {
+                -pdf-frame-content: checkbox_frame;
+                left: 10pt;
+                width: 40pt;
+                top: 150pt;
+                height: 692pt;
+            }
+
+            @frame certification_statement_start_frame {
+                -pdf-frame-content: certification_statement_start;
+                left: 10pt;
+                width: 575pt;
+                top: 130pt;
+                height: 692pt;
+            }
+
+            @frame first_checkbox_frame {
+                -pdf-frame-content: first_checkbox;
+                left: 13pt;
+                width: 40pt;
+                top: 165pt;
+                height: 692pt;
+            }
+
+            @frame first_text_frame {
+                -pdf-frame-content: first_text;
+                left: 40pt;
+                width: 535pt;
+                top: 163pt;
+                height: 692pt;
+            }
+
+            @frame or_frame {
+                -pdf-frame-content: or;
+                left: 20pt;
+                width: 575pt;
+                top: 215pt;
+                height: 692pt;
+            }
+
+            @frame second_checkbox_frame {
+                -pdf-frame-content: second_checkbox;
+                left: 13pt;
+                width: 40pt;
+                top: 240pt;
+                height: 692pt;
+            }
+
+            @frame second_text_frame {
+                -pdf-frame-content: second_text;
+                left: 40pt;
+                width: 535pt;
+                top: 238pt;
+                height: 692pt;
+            }
+
+            @frame third_checkbox_frame {
+                -pdf-frame-content: third_checkbox;
+                left: 13pt;
+                width: 40pt;
+                top: 320pt;
+                height: 692pt;
+            }
+
+            @frame third_text_frame {
+                -pdf-frame-content: third_text;
+                left: 40pt;
+                width: 535pt;
+                top: 324pt;
+                height: 692pt;
+            }
+
+            @frame fourth_checkbox_frame {
+                -pdf-frame-content: fourth_checkbox;
+                left: 13pt;
+                width: 40pt;
+                top: 350pt;
+                height: 692pt;
+            }
+
+            @frame fourth_text_frame {
+                -pdf-frame-content: fourth_text;
+                left: 40pt;
+                width: 535pt;
+                top: 354pt;
+                height: 692pt;
+            }
+
+            @frame fifth_checkbox_frame {
+                -pdf-frame-content: fifth_checkbox;
+                left: 13pt;
+                width: 40pt;
+                top: 382pt;
+                height: 692pt;
+            }
+
+            @frame fifth_text_frame {
+                -pdf-frame-content: fifth_text;
+                left: 40pt;
+                width: 535pt;
+                top: 386pt;
+                height: 692pt;
+            }
+
+            @frame signature_frame {
+                -pdf-frame-content: signature;
+                left: 10pt;
+                width: 575pt;
+                top: 450pt;
+                height: 692pt;
+            }
+        }
+
+        table {
+            border: 1px solid black;
+            margin-top: 15px;
+
+        }
+
+        td {
+            padding-top: 1px;
+            padding-left: 1px;
+        }
+
+        table td{
+            border: 1px solid;
+        }
+
+        #application_details {
+            border: 1px solid;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        #certification_statement_header {
+            font-size: 16px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        #or {
+            font-size: 14px;
+        }
+        .statement_text {
+            font-size: 13px;
+        }
+
+        #signature {
+            font-size: 13px;
+        }
+        #signature_title {
+            text-align: center;
+        }
+
+        #end_text {
+            padding-left: 20px;
+        }
+        #all_content {
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="header_content">
+<table id="application_details" style="width: 10px;">
+    <tr>
+        <td id="application_details_header" rowspan="6" style="width: 60%;">
+            <b>
+                <div id="information_disclosure_header">
+                    INFORMATION DISCLOSURE<BR/>
+                    STATEMENT BY APPLICANT<BR/>
+                    ( Not for submission under 37 CFR 1.99)
+                </div>
+            </b>
+        </td>
+                <td style="width: 25%;"> Application Number </td>
+                <td style="width: 15%;"> {{ application_number }} </td>
+            </tr>
+            <tr>
+                <td style="width: 25%;"> Filing Date </td>
+                <td style="width: 15%;"> {{ filing_date }} </td>
+            </tr>
+            <tr>
+                <td style="width: 25%;"> First Named Inventor  </td>
+                <td style="width: 15%;"> {{ first_named_inventor }} </td>
+            </tr>
+            <tr>
+                <td style="width: 25%;">Art Unit</td>
+                <td style="width: 15%;">{{ art_unit }}</td>
+            </tr>
+            <tr>
+                <td style="width: 30%;">Examiner Name</td>
+                <td style="width: 30%;">{{ examiner_name }}</td>
+            </tr>
+            <tr>
+                <td style="width: 30%;">Attorney Docket Number</td>
+                <td style="width: 30%;">{{ docket_number }}</td>
+            </tr>
+</table>
+</div>
+
+<span id="all_content">
+    <div id="certification_statement_start">
+        <div id="certification_statement_header">CERTIFICATION STATEMENT</div>
+        <div>Please see 37 CFR 1.97 and 1.98 to make the appropriate selection(s):</div>
+    </div>
+
+    <div id="first_checkbox">
+        {% if all_cited %}
+            <img src="{% static "idsgenerator/crossed.png" %}"/>
+        {% else %}
+            <img src="{% static "idsgenerator/uncrossed.png" %}"/>
+        {% endif %}
+    </div>
+
+    <div id="first_text">
+        <div class="statement_text">
+        That each item of information contained in the information disclosure statement was first cited in any communication
+        from a foreign patent office in a counterpart foreign application not more than three months prior to the filing of the
+        information disclosure statement. See 37 CFR 1.97(e)(1).</div>
+    </div>
+
+    <div id="or">
+        OR
+    </div>
+
+    <div id="second_checkbox">
+        {% if no_cited %}
+            <img src="{% static "idsgenerator/crossed.png" %}"/>
+        {% else %}
+            <img src="{% static "idsgenerator/uncrossed.png" %}"/>
+        {% endif %}
+    </div>
+
+    <div id="second_text">
+        <div class="statement_text">That no item of information contained in the information disclosure statement was cited 		in a communication from a
+       	foreign patent office in a counterpart foreign application, and, to the knowledge of the person signing the certification
+       	after making reasonable inquiry, no item of information contained in the information disclosure statement was known to
+       	any individual designated in 37 CFR 1.56(c) more than three months prior to the filing of the information disclosure
+       	statement. See 37 CFR 1.97(e)(2).</div>
+    </div>
+
+    <div id="third_checkbox">
+        {% if certification_attached %}
+            <img src="{% static "idsgenerator/crossed.png" %}"/>
+        {% else %}
+            <img src="{% static "idsgenerator/uncrossed.png" %}"/>
+        {% endif %}
+    </div>
+
+    <div id="third_text">
+        <div class="statement_text">See attached certification statement.</div>
+    </div>
+
+    <div id="fourth_checkbox">
+        {% if fee_submitted %}
+            <img src="{% static "idsgenerator/crossed.png" %}"/>
+        {% else %}
+            <img src="{% static "idsgenerator/uncrossed.png" %}"/>
+        {% endif %}
+    </div>
+
+    <div id="fourth_text">
+        <div class="statement_text">The fee set forth in 37 CFR 1.17 (p) has been submitted herewith.</div>
+    </div>
+
+    <div id="fifth_checkbox">
+        {% if certification_not_submitted %}
+            <img src="{% static "idsgenerator/crossed.png" %}"/>
+        {% else %}
+            <img src="{% static "idsgenerator/uncrossed.png" %}"/>
+        {% endif %}
+    </div>
+
+    <div id="fifth_text">
+        <div id="certification_not_submited" class="statement_text">A certification statement is not submitted herewith.</div>
+    </div>
+
+    <div id="signature">
+		<div id="signature_title">
+		<h2>SIGNATURE</h2>
+        </div>
+		<p class="statement_text">
+		A signature of the applicant or representative is required in accordance with CFR 1.33, 10.18. Please see CFR 1.4(d) for the
+		form of the signature.
+		</p>
+
+	<table>
+		<tr>
+			<td><b>Signature</b></td>
+			<td>/{{ signature_name }}/</td>
+			<td><b>Date (YYYY-MM-DD)</b></td>
+			<td>{{ date }}</td>
+		</tr>
+		<tr>
+			<td><b>Name/Print</b></td>
+			<td>{{ signature_name }}</td>
+			<td><b>Registration Number</b></td>
+			<td>{{ signature_registration_number }}</td>
+		</tr>
+	</table>
+
+	<p id="end_text" class="statement_text">
+	This collection of information is required by 37 CFR 1.97 and 1.98. The information is required to obtain or retain a benefit by the
+	public which is to file (and by the USPTO to process) an application. Confidentiality is governed by 35 U.S.C. 122 and 37 CFR
+	1.14. This collection is estimated to take 1 hour to complete, including gathering, preparing and submitting the completed
+	application form to the USPTO. Time will vary depending upon the individual case. Any comments on the amount of time you
+	require to complete this form and/or suggestions for reducing this burden, should be sent to the Chief Information Officer, U.S.
+	Patent and Trademark Office, U.S. Department of Commerce, P.O. Box 1450, Alexandria, VA 22313-1450. DO NOT SEND
+	FEES OR COMPLETED FORMS TO THIS ADDRESS. <b>SEND TO: Commissioner for Patents, P.O. Box 1450, Alexandria,
+	VA 22313-1450.</b>
+	</p>
+	</div>
+</span>
+</body>
+</html>
