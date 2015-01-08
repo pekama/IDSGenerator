@@ -1,5 +1,5 @@
 
-var app = angular.module('MainApp');
+var app = angular.module('MainApp',[]);
 
 app.config(['$httpProvider', function($httpProvider) {
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
