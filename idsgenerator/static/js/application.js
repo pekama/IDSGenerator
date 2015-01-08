@@ -1,5 +1,5 @@
 
-var app = angular.module('MainApp');
+var app = angular.module('MainApp',[]);
 
 app.config(['$httpProvider', function($httpProvider) {
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
@@ -19,6 +19,7 @@ app.run();app.controller('IdsGeneratorCtrl', ['$scope', '$http', '$window', func
     }
 
     $scope.signature_name_changed = function() {
+        console.debug('gseg')
         $scope.signature = "/" + $scope.signature_name + "/"
     }
 
