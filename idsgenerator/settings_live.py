@@ -14,7 +14,7 @@ DATABASES = {
     }
 }
 
-STATIC_URL = 'https://d3j11yi9yumry9.cloudfront.net/'
+STATIC_URL = 'https://d1nibcg8lwvvmw.cloudfront.net/'
 MEDIA_URL = 'http://d1aeaxmvezevkq.cloudfront.net/'
 STATICFILES_STORAGE = 'idsgenerator.aws.StaticFilesStorage'
 DEFAULT_FILE_STORAGE = 'idsgenerator.aws.MediaFilesStorage'
