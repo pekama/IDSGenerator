@@ -3,6 +3,7 @@ import os
 import re
 from tempfile import TemporaryFile, NamedTemporaryFile
 import threading
+import uuid
 from wsgiref.util import FileWrapper
 from django.conf import settings
 from django.http.response import HttpResponse, CompatibleStreamingHttpResponse
@@ -161,7 +162,8 @@ class GenerateApiView(APIView):
 
             output_file = self.merge_pdf(main_pdf.name, statement_pdf.name, privacy_statement_path)
 
-            saved = default_storage.save('idsgenerator/ids.pdf', output_file)
+            unique_filename = 'idsgenerator/' + 'ids-' + str(uuid.uuid4()) + '.pdf'
+            saved = default_storage.save(unique_filename, output_file)
 
             output_file.close()
             main_pdf.close()
