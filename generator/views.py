@@ -157,7 +157,7 @@ class GenerateApiView(APIView):
         if serializer.is_valid():
             main_pdf = self.generate_main_pdf(serializer)
             statement_pdf = self.generate_statement(serializer)
-            privacy_statement_path = os.path.join(settings.PROJECT_ROOT, 'idsgenerator', 'generator', 'pdf','privacy_statement.pdf')
+            privacy_statement_path = os.path.join(settings.PROJECT_ROOT, 'generator', 'pdf', 'privacy_statement.pdf')
 
             output_file = self.merge_pdf(main_pdf.name, statement_pdf.name, privacy_statement_path)
 
