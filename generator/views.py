@@ -149,6 +149,7 @@ class GenerateSerializer(serializers.Serializer):
     certification_not_submitted = serializers.BooleanField(required=False, default=False)
 
     signature_name = serializers.CharField(required=False, max_length=60, default='')
+    signature = serializers.CharField(required=False, max_length=60, default='')
     signature_registration_number = serializers.CharField(required=False, default='')
 
 
@@ -225,6 +226,7 @@ class GenerateApiView(APIView):
         certification_not_submitted = serializer.data.get('certification_not_submitted', False)
 
         signature_name = serializer.data['signature_name']
+        signature = serializer.data['signature']
         signature_registration_number = serializer.data['signature_registration_number']
 
         params = {
@@ -240,6 +242,7 @@ class GenerateApiView(APIView):
             'fee_submitted': fee_submitted,
             'certification_not_submitted': certification_not_submitted,
             'signature_name': signature_name,
+            'signature': signature,
             'signature_registration_number': signature_registration_number,
             'date': '{d.month}/{d.day}/{d.year}'.format(d=datetime.datetime.now())
         }

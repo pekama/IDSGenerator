@@ -12,15 +12,17 @@ app.run();app.controller('IdsGeneratorCtrl', ['$scope', '$http', '$window', func
     $scope.usApplicationRows = [{}];
     $scope.foreignApplicationRows = [{}];
     $scope.itemCited = 1;
-    $scope.signature_changed = false;
+    $scope.signature_changed_indicator = false;
 
     $scope.signature_changed = function() {
-        $scope.signature_changed = true
+        $scope.signature_changed_indicator = true
     }
 
     $scope.signature_name_changed = function() {
-        console.debug('gseg')
-        $scope.signature = "/" + $scope.signature_name + "/"
+        if($scope.signature_changed_indicator == false)
+        {
+            $scope.signature = "/" + $scope.signature_name + "/"
+        }
     }
 
     $scope.addNonPatentRow = function (rows_to_add){
@@ -144,6 +146,7 @@ app.run();app.controller('IdsGeneratorCtrl', ['$scope', '$http', '$window', func
                 fee_submitted: $scope.fee_submitted,
                 certification_not_submitted: $scope.certification_not_submitted,
                 signature_name: $scope.signature_name,
+                signature: $scope.signature,
                 signature_registration_number: $scope.signature_registration_number
             }
         ).
