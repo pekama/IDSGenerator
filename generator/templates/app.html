@@ -41,7 +41,7 @@
   <div class="container">
   <div class="col-md-12">
       <h1> IDS Generator</h1>
-      <p> In order to generate an IDS, just fill in the application data on the right and patent, application and foreign application numbers on the right. We will get the rest of the information for you.</p>
+      <p>Just fill in the numbers. <strong>The form will populate the rest of the information for you</strong>.</p>
   </div>
 
   <form role='form' method="POST" ng-submit="submit()">
@@ -53,7 +53,7 @@
               <tr>
                   <td>Patent Number</td>
                   <td>Issue Date</td>
-                  <td>First Named Inventor</td>
+                  <td>Patentee or Applicant</td>
               </tr>
               </thead>
                   <tr class="us_patent_row" ng-repeat="usPatentRow in usPatentRows">
@@ -75,7 +75,7 @@
               <tr>
                   <td>Application Numbers</td>
                   <td>Publication Date</td>
-                  <td>First Named Applicant</td>
+                  <td>Patentee or Applicant</td>
               </tr>
               </thead>
                   <tr class="us_application_row" ng-repeat="usApplicationRow in usApplicationRows">
@@ -97,7 +97,7 @@
               <tr>
                   <td>Application Numbers</td>
                   <td>Publication Date</td>
-                  <td>First Named Applicant</td>
+                  <td>Patentee or Applicant</td>
               </tr>
               </thead>
               <tr class="foreign_application_row" ng-repeat="foreignApplicationRow in foreignApplicationRows">
