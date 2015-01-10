@@ -125,7 +125,7 @@ class ApplicationDataAPIView(APIView):
 
 
 class NoPatentLitratureSerializer(serializers.Serializer):
-    text = serializers.CharField(required=False, default='  ')
+    text = serializers.CharField(required=False, default='')
 
 
 class GenerateSerializer(serializers.Serializer):
@@ -175,6 +175,28 @@ class GenerateApiView(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def remove_empty_entries(self, legal_matter_list):
+        if len(legal_matter_list) == 1:
+            return legal_matter_list
+
+        new_list = []
+        for legal_matter in legal_matter_list:
+            if legal_matter['number'] != '':
+                new_list.append(legal_matter)
+
+        return new_list
+
+    def remove_empty_non_patent_entries(self, non_patent_list):
+        if len(non_patent_list) == 1:
+            return non_patent_list
+
+        new_list = []
+        for non_patent in non_patent_list:
+            if non_patent['text'] != '':
+                new_list.append(non_patent)
+
+        return new_list
+
     def generate_main_pdf(self, serializer):
         application_number = serializer.data['application_number']
         filing_date = serializer.data['filing_date']
@@ -183,10 +205,10 @@ class GenerateApiView(APIView):
         examiner_name = serializer.data['examiner_name']
         docket_number = serializer.data['attorney_docket_number']
 
-        patents = serializer.data['us_patents']
-        applications = serializer.data['us_applications']
-        foreign_applications = serializer.data['foreign_applications']
-        non_patents = serializer.data['non_patent_literature']
+        patents = self.remove_empty_entries(serializer.data['us_patents'])
+        applications = self.remove_empty_entries(serializer.data['us_applications'])
+        foreign_applications = self.remove_empty_entries(serializer.data['foreign_applications'])
+        non_patents = self.remove_empty_non_patent_entries(serializer.data['non_patent_literature'])
 
         params = {
             'application_number': application_number,

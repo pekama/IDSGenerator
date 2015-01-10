@@ -35,8 +35,13 @@
   </head>
   {% verbatim %}
   <body ng-controller="IdsGeneratorCtrl">
+  <nav class="navbar navbar-default">
+  <a class="navbar-brand" href="/">IDSGenerator.com</a>
+  </nav>
+  <div class="container">
   <div class="col-md-12">
       <h1> IDS Generator</h1>
+      <p> In order to generate an IDS, just fill in the application data on the right and patent, application and foreign application numbers on the right. We will get the rest of the information for you.</p>
   </div>
 
   <form role='form' method="POST" ng-submit="submit()">
@@ -165,7 +170,7 @@
             <label for="signature_registration_number">Registration Number:</label>
             <input type="text" class="form-control" id="signature_registration_number" ng-model="signature_registration_number">
           </div>
-
+          <p><a id="pdf_link" ng-href="{{pdf_link}}">{{ pdf_link_message }}</a></p>
           <button type="submit" class="btn btn-lg btn-primary">Submit</button>
           </div>
 
@@ -203,7 +208,7 @@
               </div>
           </div>
       </form>
-
+  </div>
   </body>
   {% endverbatim %}
 </html>
