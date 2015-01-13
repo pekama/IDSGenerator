@@ -17,7 +17,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from dataservices.pair.pairdata import PairApplication
-from dataservices.uspto.USPTOdata import USPTOPatent, USPTOPublication, ForeignPublication
+from dataservices.uspto.USPTOdata import USPTOPatent, USPTOPublication, ForeignPublication, USPTOApplication
 import json
 from utilities.pdftools.pdftools import HtmlToPdfConverter, PdfMerger, XHtmlToPdfConverter
 from django.core.files.storage import default_storage
@@ -109,14 +109,14 @@ class ApplicationDataAPIView(APIView):
 
     def get(self, request, format=None):
         application_number = request.GET.get('application_number', '')
-        application = PairApplication(application_number)
+        application = USPTOApplication(application_number)
 
         response_data = {
             'application_number': application_number,
             'filing_date': application.get_filing_date(),
-            'first_named_inventor': application.get_first_named_inventor(),
-            'art_unit': application.get_art(),
-            'attorney_docket_number': application.get_docket_number()
+            'first_named_inventor': application.get_inventor(),
+            'art_unit': '',
+            'attorney_docket_number': ''
         }
 
         serializer = ApplicationDataSerializer(response_data)

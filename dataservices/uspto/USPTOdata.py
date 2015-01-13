@@ -19,6 +19,16 @@ class USPTOClient():
 
         return self._get_html_from_url(url)
 
+    def get_us_publication_by_application_number(self, application):
+        url = 'http://appft.uspto.gov/netacgi/nph-Parser?' \
+              'Sect1=PTO2&Sect2=HITOFF&p=1&u=%2Fnetahtml%2FPT' \
+              'O%2Fsearch-bool.html&r=1&f=G&l=50&co1=AND&d=PG01&s1' \
+              '=11907532&OS=11907532&RS=11907532%20%3E%3E%20appft.appft' \
+              '.uspto.gov/netacgi/nph-Parser?Sect1=PTO2&Sect2=HITOFF&p=1&u=/' \
+              'netahtml/PTO/search-bool.html&r=1&f=G&l=50&co1=AND&d=PG01&s1=' + application
+
+        return self._get_html_from_url(url)
+
     def _get_html_from_url(self, url):
         response = requests.get(url)
         return response.content
@@ -54,6 +64,45 @@ class USPTOPatent(USPTOExtractDateMixin):
         inventor_name = ' '.join([part.strip() for part in inventor_text.split(',')])
 
         return inventor_name
+
+
+class USPTOApplication():
+
+    def __init__(self, application_number, uspto_client=USPTOClient()):
+            self.html = uspto_client.get_us_publication_by_application_number(application_number)
+            self.soup = BeautifulSoup(self.html)
+
+            self.metadata_table = self.soup.find_all('table')[1]
+            self.metadata_row = self.metadata_table.find_all('tr')[2]
+
+    def get_filing_date(self):
+        table = self.soup.find_all('table')[3]
+        row = table.find_all('tr')[-1]
+
+        date = row.find_all('td')[1].b.text
+
+        return self.normalize_date(date)
+
+    def normalize_date(self, date_text):
+        date_object = datetime.strptime(date_text, '%B %d, %Y')
+        normalized_date = '{d.month}-{d.day}-{d.year}'.format(d=date_object)
+        return normalized_date
+
+    def get_inventor(self):
+        table = self.soup.find_all('table')[2]
+        row = table.tr
+
+        name = row.find_all('td')[1].b.text
+
+        return self.normalize_inventor_name(name)
+
+
+    def normalize_inventor_name(self, inventor_text):
+        # remove unnecessary spaces chars
+        # and unnecessary spaces
+        applicant_name = ' '.join(reversed(inventor_text.split(';'))).strip()
+        return applicant_name
+
 
 
 class USPTOPublication(USPTOExtractDateMixin):

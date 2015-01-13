@@ -62,31 +62,31 @@ app.run();app.controller('IdsGeneratorCtrl', ['$scope', '$http', '$window', func
             $scope.each_item_cited = false;
         }
     };
-//
-//    $scope.fillInApplicationData = function (application){
-//        $scope.loading_application_data = true;
-//        $scope.loading_message = "loading application data.."
-//
-//        $http.get('/idsgenerator/applicationdata', {
-//            params: {
-//                application_number: $scope.application
-//            }
-//        }).
-//            success(function(data, status, headers, config) {
-//                console.debug(data);
-//                $scope.filing_date = data['filing_date'];
-//                $scope.first_named_inventor = data['first_named_inventor'];
-//                $scope.art_unit = data['art_unit'];
-//                $scope.examiner_name = data['examiner_name'];
-//                $scope.attorney_docket_number = data['attorney_docket_number'];
-//
-//                $scope.loading_application_data = false;
-//                $scope.loading_message = ""
-//        }).
-//            error(function(data, status, headers, config) {
-//                $scope.loading_application_data = false;
-//                $scope.loading_message = "Cannot Get Data. Please fill in manually."
-//        })};
+
+    $scope.fillInApplicationData = function (application){
+        $scope.loading_application_data = true;
+        $scope.loading_message = "loading application data.."
+
+        $http.get('/idsgenerator/applicationdata', {
+            params: {
+                application_number: $scope.application
+            }
+        }).
+            success(function(data, status, headers, config) {
+                console.debug(data);
+                $scope.filing_date = data['filing_date'];
+                $scope.first_named_inventor = data['first_named_inventor'];
+                $scope.art_unit = data['art_unit'];
+                $scope.examiner_name = data['examiner_name'];
+                $scope.attorney_docket_number = data['attorney_docket_number'];
+
+                $scope.loading_application_data = false;
+                $scope.loading_message = ""
+        }).
+            error(function(data, status, headers, config) {
+                $scope.loading_application_data = false;
+                $scope.loading_message = "Cannot Get Data. Please fill in manually."
+        })};
 
     $scope.fillInUsPatentData = function (usPatent){
         $http.get('/idsgenerator/uspatentdata', {
@@ -155,7 +155,7 @@ app.run();app.controller('IdsGeneratorCtrl', ['$scope', '$http', '$window', func
                 $window.open(file_url)
             // this callback will be called asynchronously
             // when the response is available
-                $scope.pdf_link_message = 'Generated IDS Link'
+                $scope.pdf_link_message = 'Download IDS'
                 $scope.pdf_link = file_url
           }).
         error(function(data, status, headers, config) {
