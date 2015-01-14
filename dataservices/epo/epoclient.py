@@ -33,6 +33,17 @@ class RegisteredClient:
 
         return response_data
 
+    def fetch_publication_xml_by_publication_reference(self, reference_number):
+        fetching_url = 'http://ops.epo.org/3.1/rest-services/published-data/publication/epodoc/%s/full-cycle' % (reference_number,)
+
+        headers = self._get_access_token_header()
+
+        response_data = requests.get(fetching_url, headers=headers)
+        response_data.raise_for_status()
+
+        return response_data
+
+
     def fetch_applicant_xml(self, applicant_name, first_index, last_index):
         fetching_url = 'https://ops.epo.org/3.1/rest-services/published-data/search/full-cycle/'
         query = 'applicant = "{0}"'.format(applicant_name)

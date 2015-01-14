@@ -26,7 +26,7 @@ class AuthenticationInfo():
 
 class Patent:
 
-    def __init__(self, doc_number='', exchange_document=None, consumer_key='', consumer_secret=''):
+    def __init__(self, doc_number='', exchange_document=None, consumer_key='', consumer_secret='', reference_format=''):
 
         if consumer_key == '':
             consumer_key = AuthenticationInfo.get_key()
@@ -37,7 +37,10 @@ class Patent:
             epo_client = RegisteredClient(consumer_key, consumer_secret)
 
             normalized_document_id = self.normalize_doc_id(doc_number)
-            self.xml = epo_client.fetch_publication_xml(normalized_document_id).content
+            if reference_format == 'EPODOC':
+                self.xml = epo_client.fetch_publication_xml_by_publication_reference(normalized_document_id).content
+            else:
+                self.xml = epo_client.fetch_publication_xml(normalized_document_id).content
             self.root = ET.fromstring(self.xml)
             self.exchange_document = self.root.iter(self.get_full_element_name('exchange-document')).next()
 

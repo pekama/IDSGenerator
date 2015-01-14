@@ -139,7 +139,7 @@ class ForeignPublication():
         self.EPO_COSTUMER_SECRET = 'LK6lBYaK2BgfTtUp'
 
         self.publication_number = publication_number
-        self.epo_patent = Patent(publication_number, consumer_key=self.EPO_COSTUMER_KEY, consumer_secret=self.EPO_COSTUMER_SECRET)
+        self.epo_patent = Patent(publication_number, consumer_key=self.EPO_COSTUMER_KEY, consumer_secret=self.EPO_COSTUMER_SECRET, reference_format='EPODOC')
 
     def get_applicant(self):
         applicants = self.epo_patent.get_applicant_names()
