@@ -207,6 +207,8 @@ class GenerateApiView(APIView):
 
     def generate_ids_data_xml(self, serializer):
         application_number = serializer.data['application_number']
+        application_number = _remove_non_characters_from_string(application_number)
+
         filing_date = serializer.data['filing_date']
         first_named_inventor = serializer.data['first_named_inventor']
         art_unit = serializer.data['art_unit']
