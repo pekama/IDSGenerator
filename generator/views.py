@@ -253,9 +253,6 @@ class GenerateApiView(APIView):
 
         data_xml = render_to_string('generate_ids_data.html', params)
 
-        with open('/home/eyal/Development/ids_data.xml', 'w+') as f:
-            f.write(data_xml)
-
         return data_xml
 
 
