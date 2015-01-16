@@ -19,6 +19,7 @@ from rest_framework.views import APIView
 from dataservices.pair.pairdata import PairApplication
 from dataservices.uspto.USPTOdata import USPTOPatent, USPTOPublication, ForeignPublication, USPTOApplication
 import json
+from utilities.generateids.generateids import IdsFIller
 from utilities.pdftools.pdftools import HtmlToPdfConverter, PdfMerger, XHtmlToPdfConverter
 from django.core.files.storage import default_storage
 
@@ -157,18 +158,25 @@ class GenerateApiView(APIView):
     def post(self, request, format=None):
         serializer = GenerateSerializer(data=request.DATA)
         if serializer.is_valid():
-            main_pdf = self.generate_main_pdf(serializer)
-            statement_pdf = self.generate_statement(serializer)
-            privacy_statement_path = os.path.join(settings.PROJECT_ROOT, 'generator', 'pdf', 'privacy_statement.pdf')
+            original_ids_path = os.path.join(settings.PROJECT_ROOT, 'generator', 'pdf', 'ids.pdf')
+            jar_path = os.path.join(settings.PROJECT_ROOT, 'generator', 'java', 'IDSFiller.jar')
 
-            output_file = self.merge_pdf(main_pdf.name, statement_pdf.name, privacy_statement_path)
+            ids_data = self.generate_ids_data_xml(serializer)
+
+            ids_data_file = NamedTemporaryFile()
+            ids_data_file.write(ids_data)
+            ids_data_file.flush()
+
+            output_file = NamedTemporaryFile()
+
+            ids_filler = IdsFIller()
+            ids_filler.fill_ids(jar_path, original_ids_path, ids_data_file.name, output_file.name)
 
             unique_filename = 'idsgenerator/' + 'ids-' + str(uuid.uuid4()) + '.pdf'
             saved = default_storage.save(unique_filename, output_file)
 
+            ids_data_file.close()
             output_file.close()
-            main_pdf.close()
-            statement_pdf.close()
 
             return Response(data={'url': default_storage.url(saved)}, status=status.HTTP_201_CREATED)
 
@@ -197,6 +205,60 @@ class GenerateApiView(APIView):
 
         return new_list
 
+    def generate_ids_data_xml(self, serializer):
+        application_number = serializer.data['application_number']
+        filing_date = serializer.data['filing_date']
+        first_named_inventor = serializer.data['first_named_inventor']
+        art_unit = serializer.data['art_unit']
+        examiner_name = serializer.data['examiner_name']
+        docket_number = serializer.data['attorney_docket_number']
+
+        patents = self.remove_empty_entries(serializer.data['us_patents'])
+        applications = self.remove_empty_entries(serializer.data['us_applications'])
+        foreign_applications = self.remove_empty_entries(serializer.data['foreign_applications'])
+        non_patents = self.remove_empty_non_patent_entries(serializer.data['non_patent_literature'])
+
+        all_cited = serializer.data['each_item_cited']
+        no_cited = serializer.data['no_item_cited']
+
+        certification_attached = serializer.data.get('certification_attached', False)
+        fee_submitted = serializer.data.get('fee_submitted', False)
+        certification_not_submitted = serializer.data.get('certification_not_submitted', False)
+
+        signature_name = serializer.data['signature_name']
+        signature = serializer.data['signature']
+        signature_registration_number = serializer.data['signature_registration_number']
+
+        params = {
+            'application_number': application_number,
+            'filing_date': filing_date,
+            'first_named_inventor': first_named_inventor,
+            'art_unit': art_unit,
+            'examiner_name': examiner_name,
+            'docket_number': docket_number,
+            'us_patents': patents,
+            'us_applications': applications,
+            'foreign_applications': foreign_applications,
+            'non_patents': non_patents,
+            'all_cited': all_cited,
+            'no_cited': no_cited,
+            'certification_attached': certification_attached,
+            'fee_submitted': fee_submitted,
+            'certification_not_submitted': certification_not_submitted,
+            'signature_name': signature_name,
+            'signature': signature,
+            'signature_registration_number': signature_registration_number,
+            'date': '{d.month}/{d.day}/{d.year}'.format(d=datetime.datetime.now())
+        }
+
+        data_xml = render_to_string('generate_ids_data.html', params)
+
+        with open('/home/eyal/Development/ids_data.xml', 'w+') as f:
+            f.write(data_xml)
+
+        return data_xml
+
+
     def generate_main_pdf(self, serializer):
         application_number = serializer.data['application_number']
         filing_date = serializer.data['filing_date']
@@ -220,7 +282,7 @@ class GenerateApiView(APIView):
             'us_patents': patents,
             'us_applications': applications,
             'foreign_applications': foreign_applications,
-            'non_patents': non_patents
+            'non_patents': non_patents,
         }
 
         document_html = render_to_string('generate.html', params)

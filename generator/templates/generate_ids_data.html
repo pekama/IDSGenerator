@@ -1,0 +1,111 @@
+<us-ids date-produced="20050902" dtd-version="v20_EFSWeb" file="" lang="" status="">
+    <us-filing-info>
+
+        <us-application-identification-info>
+            <doc-number>{{ application_number }}</doc-number>
+            <date>{{ filing_date }}</date>
+        </us-application-identification-info>
+
+        <us-first-named-inventor>
+            <name name-type="">{{ first_named_inventor }}</name>
+        </us-first-named-inventor>
+
+        <primary-examiner>
+            <name name-type="">{{ examiner_name }}</name>
+            <electronic-signature date="" place-signed="">
+                <basic-signature>
+                    <text-string/>
+                </basic-signature>
+            </electronic-signature>
+        </primary-examiner>
+
+    </us-filing-info>
+
+        {% if certification_not_submitted %}
+            <us-ids-certification text="1">
+        {% else %}
+            <us-ids-certification text="0">
+        {% endif %}
+
+        {% if all_cited %}
+            <us-foreign-pat-office-citation text="1"/>
+        {% else %}
+            <us-foreign-pat-office-citation text="0"/>
+        {% endif %}
+
+        {% if no_cited %}
+            <us-new-findings text="1"/>
+        {% else %}
+            <us-new-findings text="0"/>
+        {% endif %}
+
+        {% if certification_attached %}
+            <us-certification-statement-attached boilerplate-text="1" file="" type=""/>
+        {% else %}
+            <us-certification-statement-attached boilerplate-text="0" file="" type=""/>
+        {% endif %}
+
+        {% if fee_submitted %}
+            <us-fee-submitted boilerplate-text="1"/>
+        {% else %}
+            <us-fee-submitted boilerplate-text="0"/>
+        {% endif %}
+
+        <applicant-name>
+            <name name-type="">{{ signature_name }}</name>
+            <registered-number>{{ signature_registration_number }}</registered-number>
+        </applicant-name>
+        <electronic-signature date="{{ date }}" place-signed="">
+            <basic-signature>
+                <text-string>{{ signature }}</text-string>
+            </basic-signature>
+        </electronic-signature>
+    </us-ids-certification>
+
+    <us-patent-cite>
+        {% for patent in us_patents %}
+            <us-doc-reference id="dd:id_2" num="{{ forloop.counter }}" sequence="">
+                <doc-number>{{ patent.number }}</doc-number>
+                <name name-type="">{{ patent.inventor }}</name>
+                <date>{{ patent.date }}</date>
+                <class/>
+                <subclass/>
+            </us-doc-reference>
+        {% endfor %}
+    </us-patent-cite>
+
+        <us-pub-appl-cite>
+            {% for patent in us_applications %}
+            <us-doc-reference id="dd:id_3" num="{{ forloop.counter }}" sequence="">
+                <doc-number>{{ patent.number }}</doc-number>
+                <name name-type="">{{ patent.inventor }}</name>
+                <date>{{ patent.date }}</date>
+                <class/>
+                <subclass/>
+            </us-doc-reference>
+            {% endfor %}
+        </us-pub-appl-cite>
+
+        <us-foreign-document-cite>
+            {% for patent in foreign_applications %}
+            <us-foreign-doc-reference id="{{ forloop.counter }}" num="" sequence="" translation-attached="no">
+                <country/>
+                <doc-number>{{ patent.number }}</doc-number>
+                <name name-type="">{{ patent.inventor }}</name>
+                <date>{{ patent.date }}</date>
+                <class/>
+                <subclass/>
+            </us-foreign-doc-reference>
+            {% endfor %}
+        </us-foreign-document-cite>
+
+    {% for non_patent in non_patents %}
+        <us-nplcit file="" id="{{ forloop.counter }}" medium="" num="" sequence="" translation-attached="no" type="" url="">
+            <text>{{ non_patent.text }}</text>
+        </us-nplcit>
+    {% endfor %}
+
+    <version-info>2.1</version-info>
+    <clientversion>9.505</clientversion>
+    <numofpages></numofpages>
+</us-ids>

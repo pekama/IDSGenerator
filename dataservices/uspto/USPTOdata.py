@@ -38,7 +38,7 @@ class USPTOExtractDateMixin():
 
     def normalize_date(self, date_text):
         date_object = datetime.strptime(date_text, '%B %d, %Y')
-        normalized_date = '{d.month}/{d.day}/{d.year}'.format(d=date_object)
+        normalized_date = '{d.year}-{d.month}-{d.day}'.format(d=date_object)
         return normalized_date
 
     def get_date(self):
@@ -85,7 +85,7 @@ class USPTOApplication():
 
     def normalize_date(self, date_text):
         date_object = datetime.strptime(date_text, '%B %d, %Y')
-        normalized_date = '{d.month}-{d.day}-{d.year}'.format(d=date_object)
+        normalized_date = '{d.year}-{d.month}-{d.day}'.format(d=date_object)
         return normalized_date
 
     def get_inventor(self):
@@ -163,7 +163,7 @@ class ForeignPublication():
         day = int(date_text[6:8])
 
         date_object = datetime(year, month, day)
-        normalized_date = '{d.month}/{d.day}/{d.year}'.format(d=date_object)
+        normalized_date = '{d.year}-{d.month}-{d.day}'.format(d=date_object)
         return normalized_date
 
     def get_publication_pdf(self, output_path):
