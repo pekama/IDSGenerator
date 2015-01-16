@@ -23,6 +23,7 @@ from utilities.generateids.generateids import IdsFIller
 from utilities.pdftools.pdftools import HtmlToPdfConverter, PdfMerger, XHtmlToPdfConverter
 from django.core.files.storage import default_storage
 
+
 def _get_list_of_values(request, field_name, separator=';'):
     field_value = request.POST.get(field_name, '')
     if field_value.strip() == '':
@@ -40,6 +41,10 @@ class IPMatterSerializer(serializers.Serializer):
     number = serializers.CharField(required=False, default='')
     date = serializers.CharField(required=False, default='')
     inventor = serializers.CharField(required=False, default='')
+
+
+class ForeignMatterSerializer(IPMatterSerializer):
+    country = serializers.CharField(required=False)
 
 
 class IPDataAPIView(APIView):
@@ -86,15 +91,28 @@ class UsApplicationAPIView(IPDataAPIView):
 
 
 class ForeignApplicationAPIView(IPDataAPIView):
+
+    def get(self, request, format=None):
+        ip_identifier = request.GET.get(self.ip_identifier_name, "")
+
+        response_data = self.get_ip_data(ip_identifier)
+        response_data = self.replace_non_breaking_space(response_data)
+
+        serializer = ForeignMatterSerializer(response_data)
+
+        return Response(serializer.data)
+
     ip_identifier_name = "foreign_application"
 
     def get_ip_data(self, foreign_application):
         normalized_foreign_application = _remove_non_characters_from_string(foreign_application)
         foreign_publication = ForeignPublication(normalized_foreign_application)
+
         return {
             'date': foreign_publication.get_date(),
             'inventor': foreign_publication.get_applicant(),
-            'number': normalized_foreign_application
+            'number': normalized_foreign_application,
+            'country': foreign_publication.get_country_code()
         }
 
 
@@ -139,7 +157,7 @@ class GenerateSerializer(serializers.Serializer):
 
     us_patents = IPMatterSerializer(required=False, many=True)
     us_applications = IPMatterSerializer(required=False, many=True)
-    foreign_applications = IPMatterSerializer(required=False, many=True)
+    foreign_applications = ForeignMatterSerializer(required=False, many=True)
     non_patent_literature = NoPatentLitratureSerializer(required=False, many=True)
 
     each_item_cited = serializers.BooleanField(required=False, default=False)
@@ -218,6 +236,7 @@ class GenerateApiView(APIView):
         patents = self.remove_empty_entries(serializer.data['us_patents'])
         applications = self.remove_empty_entries(serializer.data['us_applications'])
         foreign_applications = self.remove_empty_entries(serializer.data['foreign_applications'])
+
         non_patents = self.remove_empty_non_patent_entries(serializer.data['non_patent_literature'])
 
         all_cited = serializer.data['each_item_cited']
@@ -256,92 +275,3 @@ class GenerateApiView(APIView):
         data_xml = render_to_string('generate_ids_data.html', params)
 
         return data_xml
-
-
-    def generate_main_pdf(self, serializer):
-        application_number = serializer.data['application_number']
-        filing_date = serializer.data['filing_date']
-        first_named_inventor = serializer.data['first_named_inventor']
-        art_unit = serializer.data['art_unit']
-        examiner_name = serializer.data['examiner_name']
-        docket_number = serializer.data['attorney_docket_number']
-
-        patents = self.remove_empty_entries(serializer.data['us_patents'])
-        applications = self.remove_empty_entries(serializer.data['us_applications'])
-        foreign_applications = self.remove_empty_entries(serializer.data['foreign_applications'])
-        non_patents = self.remove_empty_non_patent_entries(serializer.data['non_patent_literature'])
-
-        params = {
-            'application_number': application_number,
-            'filing_date': filing_date,
-            'first_named_inventor': first_named_inventor,
-            'art_unit': art_unit,
-            'examiner_name': examiner_name,
-            'docket_number': docket_number,
-            'us_patents': patents,
-            'us_applications': applications,
-            'foreign_applications': foreign_applications,
-            'non_patents': non_patents,
-        }
-
-        document_html = render_to_string('generate.html', params)
-
-        output_file = NamedTemporaryFile()
-
-        pdf_creator = XHtmlToPdfConverter()
-        pdf_creator.convert_from_string(document_html, output_file.name)
-
-        return output_file
-
-    def generate_statement(self, serializer):
-        application_number = serializer.data['application_number']
-        filing_date = serializer.data['filing_date']
-        first_named_inventor = serializer.data['first_named_inventor']
-        art_unit = serializer.data['art_unit']
-        examiner_name = serializer.data['examiner_name']
-        docket_number = serializer.data['attorney_docket_number']
-
-        all_cited = serializer.data['each_item_cited']
-        no_cited = serializer.data['no_item_cited']
-
-        certification_attached = serializer.data.get('certification_attached', False)
-        fee_submitted = serializer.data.get('fee_submitted', False)
-        certification_not_submitted = serializer.data.get('certification_not_submitted', False)
-
-        signature_name = serializer.data['signature_name']
-        signature = serializer.data['signature']
-        signature_registration_number = serializer.data['signature_registration_number']
-
-        params = {
-            'application_number': application_number,
-            'filing_date': filing_date,
-            'first_named_inventor': first_named_inventor,
-            'art_unit': art_unit,
-            'examiner_name': examiner_name,
-            'docket_number': docket_number,
-            'all_cited': all_cited,
-            'no_cited': no_cited,
-            'certification_attached': certification_attached,
-            'fee_submitted': fee_submitted,
-            'certification_not_submitted': certification_not_submitted,
-            'signature_name': signature_name,
-            'signature': signature,
-            'signature_registration_number': signature_registration_number,
-            'date': '{d.month}/{d.day}/{d.year}'.format(d=datetime.datetime.now())
-        }
-
-        document_html = render_to_string('generate_statement.html', params)
-
-        output_file = NamedTemporaryFile()
-        pdf_creator = XHtmlToPdfConverter()
-        pdf_creator.convert_from_string(document_html, output_file.name)
-
-        return output_file
-
-    def merge_pdf(self, *paths):
-        output_file = TemporaryFile()
-        merger = PdfMerger()
-        merger.merge_pdf(paths, output_file)
-
-        output_file.seek(0)
-        return output_file

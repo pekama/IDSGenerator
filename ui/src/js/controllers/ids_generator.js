@@ -116,6 +116,7 @@ app.controller('IdsGeneratorCtrl', ['$scope', '$http', '$window', function($scop
                     console.debug(data);
                     foreignApplication.date = data['date'];
                     foreignApplication.inventor = data['inventor'];
+                    foreignApplication.country = data['country'];
             });
         }
 

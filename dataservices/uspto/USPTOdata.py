@@ -141,6 +141,9 @@ class ForeignPublication():
         self.publication_number = publication_number
         self.epo_patent = Patent(publication_number, consumer_key=self.EPO_COSTUMER_KEY, consumer_secret=self.EPO_COSTUMER_SECRET, reference_format='EPODOC')
 
+    def get_country_code(self):
+        return self.epo_patent.get_country()
+
     def get_applicant(self):
         applicants = self.epo_patent.get_applicant_names()
         first_applicant = applicants[0]

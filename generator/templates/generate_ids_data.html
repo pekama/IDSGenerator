@@ -92,7 +92,7 @@
         <us-foreign-document-cite>
             {% for patent in foreign_applications %}
             <us-foreign-doc-reference id="{{ forloop.counter }}" num="" sequence="" translation-attached="no">
-                <country/>
+                <country>{{ patent.country }}</country>
                 <doc-number>{{ patent.number }}</doc-number>
                 <name name-type="">{{ patent.inventor }}</name>
                 <date>{{ patent.date }}</date>
