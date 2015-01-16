@@ -44,7 +44,7 @@ class IPMatterSerializer(serializers.Serializer):
 
 
 class ForeignMatterSerializer(IPMatterSerializer):
-    country = serializers.CharField(required=False)
+    country = serializers.CharField(required=False, default='')
 
 
 class IPDataAPIView(APIView):
