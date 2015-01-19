@@ -269,7 +269,7 @@ class GenerateApiView(APIView):
             'signature_name': signature_name,
             'signature': signature,
             'signature_registration_number': signature_registration_number,
-            'date': '{d.month}/{d.day}/{d.year}'.format(d=datetime.datetime.now())
+            'date': datetime.datetime.now().strftime('%Y-%m-%d')
         }
 
         data_xml = render_to_string('generate_ids_data.html', params)
