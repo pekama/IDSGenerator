@@ -33,10 +33,9 @@
      <script src="{% static "js/templates.js" %}"></script>
 
   </head>
-  {% verbatim %}
   <body ng-controller="IdsGeneratorCtrl">
   <nav class="navbar navbar-default">
-  <a class="navbar-brand" href="/">IDSGenerator.com BETA</a>
+  <a class="navbar-brand" href="/"><img src="{% static "logo_transparent.png" %}" alt="Pekama IDSGenerator Logo"></img></a>
   </nav>
   <div class="container">
   <div class="col-md-12">
@@ -44,6 +43,7 @@
       <p>Just fill in the numbers. <strong>The form will populate the rest of the information for you</strong>.</p>
   </div>
 
+  {% verbatim %}
   <form role='form' method="POST" ng-submit="submit()">
 
           <div class='col-md-6'>
@@ -218,6 +218,8 @@
     ga('send', 'pageview');
 
   </script>
-  </body>
   {% endverbatim %}
+  <BR/>
+  <p>The code that fills the IDS documents is distributed under the <a href="http://www.gnu.org/licenses/agpl-3.0.html">Affero GNU Public License</a>. You can download it <a href="{% static "src.zip" %}">here</a></p>
+  </body>
 </html>
