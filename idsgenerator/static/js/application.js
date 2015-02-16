@@ -96,6 +96,7 @@ app.run();app.controller('IdsGeneratorCtrl', ['$scope', '$http', '$window', func
         }).then(function (response) {
                 var data = response['data'];
                 console.debug(data);
+                usPatent.number = data['number'];
                 usPatent.date = data['date'];
                 usPatent.inventor = data['inventor'];
         });
@@ -109,6 +110,7 @@ app.run();app.controller('IdsGeneratorCtrl', ['$scope', '$http', '$window', func
             }).then(function (response) {
                     var data = response['data'];
                     console.debug(data);
+                    usApplication.number = data['number'];
                     usApplication.date = data['date'];
                     usApplication.inventor = data['inventor'];
             });
@@ -122,6 +124,7 @@ app.run();app.controller('IdsGeneratorCtrl', ['$scope', '$http', '$window', func
             }).then(function (response) {
                     var data = response['data']
                     console.debug(data);
+                    foreignApplication.number = data['number'];
                     foreignApplication.date = data['date'];
                     foreignApplication.inventor = data['inventor'];
                     foreignApplication.country = data['country'];
